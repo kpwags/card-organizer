@@ -348,3 +348,26 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
+
+
+# dependencies
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# Environment Files
+appsettings.development.json
+appsettings.test.json
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Jetbrains
+
+.idea
