@@ -1,0 +1,15 @@
+{
+  "name": "CardOrganizer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "autoprefixer": "^10.4.13",
+    "postcss": "^8.4.21",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.2.4"
+  },
+  "scripts": {
+    "buildcss": "postcss wwwroot/css/site.css -o wwwroot/css/site.min.css"
+  }
+}
