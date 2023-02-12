@@ -1,4 +1,4 @@
-using CardOrgamizer.Domain.Models;
+using CardOrganizer.Domain.Models;
 using System.Threading.Tasks;
 
 namespace CardOrganizer.Application.Services;
