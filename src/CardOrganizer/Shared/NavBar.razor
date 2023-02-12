@@ -1,0 +1,34 @@
+@using CardOrganizer.Infrastructure.Services
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavigationManager
+
+<header class="w-full border-b-4 border-gray-400 bg-primary shadow-md">
+    <div class="flex h-20 items-center justify-between">
+        <div class="site-title text-white text-2xl pl-4"><a href="/">Card Organizer</a></div>
+        <div class="text-right">
+            <ul class="inline-block">
+                <AuthorizeView>
+                        <Authorized>
+                            <li class="inline-block mx-4"><a href="#" class="text-white">@context?.User?.Identity?.Name</a></li>
+                            <li class="inline-block mx-4">
+                                <button type="button" class="btn-link" @onclick="async () => await HandleLogout()">Logout</button>
+                            </li>
+                        </Authorized>
+                        <NotAuthorized>
+                            <li class="inline-block mx-4"><a href="/login" class="text-white">Login</a></li>
+                            <li class="inline-block mx-4"><a href="/register" class="text-white">Register</a></li>
+                        </NotAuthorized>
+                </AuthorizeView>
+            </ul>
+        </div>
+    </div>
+</header>
+
+@code {
+    [CascadingParameter] private Task<AuthenticationState>? AuthenticationState { get; set; }
+
+    private async Task HandleLogout()
+    {
+        await ((CustomAuthenticationStateProvider)AuthStateProvider).LogoutUser();
+    }
+}

@@ -4,6 +4,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardOrganizer", "src\CardOr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardOrganizer.Domain", "src\CardOrganizer.Domain\CardOrganizer.Domain.csproj", "{D12D1971-6BCE-4D44-BED1-BC282CCE10C9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{1C3E2116-3D4D-40B6-96EE-49E3A29B8687}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardOrganizer.Application", "src\CardOrganizer.Application\CardOrganizer.Application.csproj", "{5DFD575A-E014-4826-B62D-4D9D9A4D3320}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardOrganizer.Infrastructure", "src\CardOrganizer.Infrastructure\CardOrganizer.Infrastructure.csproj", "{433930A4-4D00-43D3-A542-FA4EDEEF0A9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +24,19 @@ Global
 		{D12D1971-6BCE-4D44-BED1-BC282CCE10C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D12D1971-6BCE-4D44-BED1-BC282CCE10C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D12D1971-6BCE-4D44-BED1-BC282CCE10C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DFD575A-E014-4826-B62D-4D9D9A4D3320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DFD575A-E014-4826-B62D-4D9D9A4D3320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DFD575A-E014-4826-B62D-4D9D9A4D3320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DFD575A-E014-4826-B62D-4D9D9A4D3320}.Release|Any CPU.Build.0 = Release|Any CPU
+		{433930A4-4D00-43D3-A542-FA4EDEEF0A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{433930A4-4D00-43D3-A542-FA4EDEEF0A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{433930A4-4D00-43D3-A542-FA4EDEEF0A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{433930A4-4D00-43D3-A542-FA4EDEEF0A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4A60D1A3-7076-4489-AE1C-A56BF5E05600} = {1C3E2116-3D4D-40B6-96EE-49E3A29B8687}
+		{D12D1971-6BCE-4D44-BED1-BC282CCE10C9} = {1C3E2116-3D4D-40B6-96EE-49E3A29B8687}
+		{5DFD575A-E014-4826-B62D-4D9D9A4D3320} = {1C3E2116-3D4D-40B6-96EE-49E3A29B8687}
+		{433930A4-4D00-43D3-A542-FA4EDEEF0A9B} = {1C3E2116-3D4D-40B6-96EE-49E3A29B8687}
 	EndGlobalSection
 EndGlobal

@@ -1,7 +1,13 @@
+using Blazored.SessionStorage;
+using CardOrganizer.Application.Services;
 using CardOrganizer.Configuration;
-using CardOrganizer.Database;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
+using CardOrganizer.Domain.Dtos;
+using CardOrganizer.Extensions;
+using CardOrganizer.Infrastructure.Database;
+using CardOrganizer.Infrastructure.Services;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Server;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var cardOrganizerConfiguration = new CardOrganizerConfiguration();
@@ -28,12 +34,20 @@ var configuration = new ConfigurationBuilder()
 
 configuration.Bind(cardOrganizerConfiguration);
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-{
-    options.UseSqlServer(
-        configuration.GetConnectionString("Main")
-    );
-});
+builder.Services.AddDbContextFactory<ApplicationDbContext>(opt =>
+    opt.UseSqlServer(configuration.GetConnectionString("Main")));
+
+builder.Services.AddIdentity<UserAccountDto, IdentityRole<int>>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddBlazoredSessionStorage();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
+builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddRepositories();
+builder.Services.AddServices();
 
 var app = builder.Build();
 
@@ -50,6 +64,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapBlazorHub();
 app.MapFallbackToPage("/_Host");

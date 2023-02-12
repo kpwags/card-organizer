@@ -1,0 +1,82 @@
+@page "/Login"
+
+@using CardOrganizer.ViewModels
+@using CardOrganizer.Application.Services
+@using CardOrganizer.Infrastructure.Services
+
+@inject IAccountService AccountService
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthStateProvider
+
+<PageTitle>Login | Card Organizer</PageTitle>
+
+<main class="block small">
+    <div class="bg-white rounded-lg border-4 border-neutral-400 p-8">
+        <h1 class="text-3xl">Login</h1>
+        <EditForm Model="@_model" OnSubmit="@LoginUser">
+            <DataAnnotationsValidator />
+            
+            @if (_pageError != "")
+            {
+                <div class="alert error mt-8 mb-0">
+                    @_pageError
+                </div>
+            }
+            
+            <fieldset disabled="@_isLoading" aria-busy="@_isLoading">
+                <div class="my-8">
+                    <label for="email" class="mb-8">
+                        <div class="pb-2 font-semibold">Email</div>
+                        <InputText type="email" id="email" DisplayName="Email" @bind-Value="@_model.Email"/>
+                        <ValidationMessage For="@(() => _model.Email)"></ValidationMessage>
+                    </label>
+                </div>
+                <div class="my-8">
+                    <label for="email" class="mb-8">
+                        <div class="pb-2 font-semibold">Password</div>
+                        <InputText type="password" id="password" DisplayName="Email" @bind-Value="@_model.Password"/>
+                        <ValidationMessage For="@(() => _model.Password)"></ValidationMessage>
+                    </label>
+                </div>
+                <div class="mt-8">
+                    <button type="submit">Login</button>
+                </div>
+            </fieldset>
+        </EditForm>
+    </div>
+</main>
+
+@code {
+    private readonly LoginViewModel _model = new();
+    private bool _isLoading;
+    private string _pageError = string.Empty;
+
+    private async void LoginUser(EditContext editContext)
+    {
+        _pageError = string.Empty;
+        
+        bool isValid = editContext.Validate();
+
+        if (!isValid)
+        {
+            return;
+        }
+        
+        try
+        {
+            var user = await AccountService.LoginUser(_model.Email, _model.Password);
+
+            await ((CustomAuthenticationStateProvider)AuthStateProvider).AuthenticateUser(user);
+            
+            _isLoading = false;
+            
+            NavigationManager.NavigateTo("/", true);
+        }
+        catch (Exception e)
+        {
+            _pageError = e.Message;
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+}

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CardOrganizer.Database;
+namespace CardOrganizer.Infrastructure.Database;
+
+public class Role : IdentityRole<int> {}
 
 public class ApplicationDbContext : IdentityDbContext<UserAccountDto, IdentityRole<int>, int>
 {

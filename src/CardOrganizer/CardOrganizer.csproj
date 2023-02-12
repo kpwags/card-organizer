@@ -7,21 +7,39 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css" />
-    <_ContentIncludedByDefault Remove="wwwroot\css\bootstrap\bootstrap.min.css.map" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.2">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CardOrganizer.Application\CardOrganizer.Application.csproj" />
     <ProjectReference Include="..\CardOrganizer.Domain\CardOrganizer.Domain.csproj" />
+    <ProjectReference Include="..\CardOrganizer.Infrastructure\CardOrganizer.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components" />
+  </ItemGroup>
+
+  <Target Name="Static" BeforeTargets="Build">
+    <Exec Command="yarn buildcss" />
+  </Target>
+
+  <Target Name="YarnBuild" BeforeTargets="BeforeBuild">
+    <Exec Command="yarn buildcss" />
+  </Target>
+  <ItemGroup>
+    <Watch Include="**\*.css" Exclude="node_modules\**\*;build\*" />
   </ItemGroup>
 
 </Project>
