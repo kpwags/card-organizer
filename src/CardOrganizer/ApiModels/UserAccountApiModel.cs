@@ -1,4 +1,4 @@
-using CardOrgamizer.Domain.Models;
+using CardOrganizer.Domain.Models;
 
 namespace CardOrganizer.ApiModels;
 

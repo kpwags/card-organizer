@@ -35,7 +35,7 @@ var configuration = new ConfigurationBuilder()
 configuration.Bind(cardOrganizerConfiguration);
 
 builder.Services.AddDbContextFactory<ApplicationDbContext>(opt =>
-    opt.UseSqlServer(configuration.GetConnectionString("Main")));
+    opt.UseSqlServer(configuration.GetConnectionString("Main"), b => b.MigrationsAssembly("CardOrganizer")));
 
 builder.Services.AddIdentity<UserAccountDto, IdentityRole<int>>()
     .AddEntityFrameworkStores<ApplicationDbContext>()

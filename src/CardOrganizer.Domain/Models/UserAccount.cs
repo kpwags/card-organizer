@@ -1,6 +1,6 @@
 using CardOrganizer.Domain.Dtos;
 
-namespace CardOrgamizer.Domain.Models;
+namespace CardOrganizer.Domain.Models;
 
 public class UserAccount
 {
