@@ -1,5 +1,3 @@
-using CardOrganizer.Domain.Models;
-using CardOrganizer.Domain.Dtos;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;

@@ -1,8 +1,5 @@
 using System.Security.Claims;
-using System.Threading.Tasks;
 using Blazored.SessionStorage;
-using CardOrganizer.Domain.Models;
-using CardOrganizer.Domain.Dtos;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 

@@ -1,6 +1,3 @@
-using CardOrganizer.Domain.Models;
-using System.Threading.Tasks;
-
 namespace CardOrganizer.Application.Services;
 
 public interface IAccountService

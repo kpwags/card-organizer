@@ -1,5 +1,3 @@
-using CardOrganizer.Domain.Dtos;
-
 namespace CardOrganizer.Domain.Models;
 
 public class BaseballCard
