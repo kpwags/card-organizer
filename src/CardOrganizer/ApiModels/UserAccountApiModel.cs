@@ -1,5 +1,3 @@
-using CardOrganizer.Domain.Models;
-
 namespace CardOrganizer.ApiModels;
 
 public class UserAccountApiModel

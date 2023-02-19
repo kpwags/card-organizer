@@ -1,8 +1,4 @@
-using System;
 using CardOrganizer.Application.Services;
-using CardOrganizer.Domain.Models;
-using System.Threading.Tasks;
-using CardOrganizer.Domain.Dtos;
 using Microsoft.AspNetCore.Identity;
 
 namespace CardOrganizer.Infrastructure.Services;

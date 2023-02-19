@@ -1,12 +1,9 @@
 using Blazored.SessionStorage;
-using CardOrganizer.Application.Services;
 using CardOrganizer.Configuration;
 using CardOrganizer.Domain.Dtos;
 using CardOrganizer.Extensions;
 using CardOrganizer.Infrastructure.Database;
-using CardOrganizer.Infrastructure.Services;
 using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

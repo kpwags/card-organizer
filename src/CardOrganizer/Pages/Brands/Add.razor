@@ -1,0 +1,90 @@
+@page "/brands/add"
+@using CardOrganizer.ViewModels
+@using CardOrganizer.Domain
+@inject IBrandRespository BrandRespository
+@inject NavigationManager NavigationManager
+
+<PageTitle>Add New Brand | Card Organizer</PageTitle>
+
+<main class="block small">
+    <div class="bg-white rounded-lg border-4 border-neutral-400 p-8">
+        <h1 class="text-3xl">Add Brand</h1>
+        <EditForm Model="@_model" OnSubmit="@AddBrand">
+            <DataAnnotationsValidator/>
+            
+            @if (_pageError != "")
+            {
+                <div class="alert error mt-8 mb-0">
+                    @_pageError
+                </div>
+            }
+            
+            <fieldset disabled="@_isLoading" aria-busy="@_isLoading">
+                <div class="my-8">
+                    <label for="name" class="mb-8">
+                        <div class="pb-2 font-semibold">Name</div>
+                        <InputText type="text" id="name" DisplayName="Name" @bind-Value="@_model.Name" maxlength="150" />
+                        <ValidationMessage For="@(() => _model.Name)"></ValidationMessage>
+                    </label>
+                </div>
+                
+                <div class="my-8">
+                    <label for="type" class="mb-8">
+                        <div class="pb-2 font-semibold">Type</div>
+                        <InputSelect type="text" id="cardTypeId" DisplayName="Type" @bind-Value="@_model.CardTypeId">
+                            <option value="1">Baseball</option>
+                            <option value="2">Football</option>
+                        </InputSelect>
+                        <ValidationMessage For="@(() => _model.CardTypeId)"></ValidationMessage>
+                    </label>
+                </div>
+                
+                <div class="mt-8">
+                    <button type="submit">Add Brand</button>
+                    <a class="btn-secondary ml-2" href="/brands">Cancel</a>
+                </div>
+            </fieldset>
+        </EditForm>
+    </div>
+</main>
+
+@code {
+    private readonly AddBrandViewModel _model = new();
+    private bool _isLoading;
+    private string _pageError = string.Empty;
+
+    private async void AddBrand(EditContext editContext)
+    {
+        _pageError = string.Empty;
+        
+        bool isValid = editContext.Validate();
+        
+        if (!isValid)
+        {
+            
+            return;
+        }
+        
+        _isLoading = true;
+        
+        try
+        {
+            await BrandRespository.Add(new Brand
+            {
+                Name = _model.Name,
+                CardType = (Constants.CardType)_model.CardTypeId,
+            });
+            
+            NavigationManager.NavigateTo("/brands", true);
+            
+            _isLoading = false;
+        }
+        catch (Exception e)
+        {
+            _pageError = e.Message;
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+}

@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace CardOrganizer.Domain;
 
-public class Constants
+public static class Constants
 {
     public enum CardType
     {
@@ -10,7 +8,7 @@ public class Constants
         Football = 2,
     }
 
-    public List<string> BaseballTeams = new List<string>()
+    public static List<string> BaseballTeams = new List<string>()
     {
         "Arizona Diamondbacks",
         "Atlanta Braves",
