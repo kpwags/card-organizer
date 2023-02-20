@@ -61,6 +61,10 @@
     private readonly RegisterUserAccountViewModel _model = new();
     private bool _isLoading;
     private string _pageError = string.Empty;
+    
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "redirect_url")]
+    public string RedirectUrl { get; set; } = "/";
 
     private async void RegisterUser(EditContext editContext)
     {
@@ -85,7 +89,7 @@
             
             await ((CustomAuthenticationStateProvider)AuthStateProvider).AuthenticateUser(user);
             
-            NavigationManager.NavigateTo("/", true);
+            NavigationManager.NavigateTo(string.IsNullOrWhiteSpace(RedirectUrl) ? "/" : RedirectUrl, true);
             
             _isLoading = false;
         }

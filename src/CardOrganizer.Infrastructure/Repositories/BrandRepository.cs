@@ -33,7 +33,9 @@ public class BrandRepository : IBrandRespository
     {
         var dbContext = _contextFactory.CreateDbContext();
 
-        return dbContext.Brands.Select(b => Brand.FromDto(b));
+        return dbContext.Brands
+            .OrderBy(b => b.Name)
+            .Select(b => Brand.FromDto(b));
     }
 
     public async Task Add(Brand brand)

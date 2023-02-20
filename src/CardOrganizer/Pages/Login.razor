@@ -48,6 +48,10 @@
     private readonly LoginViewModel _model = new();
     private bool _isLoading;
     private string _pageError = string.Empty;
+    
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "redirect_url")]
+    public string RedirectUrl { get; set; } = "/";
 
     private async void LoginUser(EditContext editContext)
     {
@@ -68,7 +72,7 @@
             
             _isLoading = false;
             
-            NavigationManager.NavigateTo("/", true);
+            NavigationManager.NavigateTo(string.IsNullOrWhiteSpace(RedirectUrl) ? "/" : RedirectUrl, true);
         }
         catch (Exception e)
         {

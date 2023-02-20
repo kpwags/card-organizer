@@ -8,54 +8,61 @@
 
 <PageTitle>Edit Brand | Card Organizer</PageTitle>
 
-<main class="block small">
-    <div class="bg-white rounded-lg border-4 border-neutral-400 p-8">
-        <h1 class="text-3xl">Edit Brand</h1>
-        <EditForm Model="@_model" OnSubmit="@EditBrand">
-            <DataAnnotationsValidator/>
-            
-            @if (_pageError != "")
-            {
-                <div class="alert error mt-8 mb-0">
-                    @_pageError
-                </div>
-            }
-            
-            <fieldset disabled="@_isLoading" aria-busy="@_isLoading">
-                <div class="my-8">
-                    <label for="name" class="mb-8">
-                        <div class="pb-2 font-semibold">Name</div>
-                        <InputText type="text" id="name" DisplayName="Name" @bind-Value="@_model.Name" maxlength="150" />
-                        <ValidationMessage For="@(() => _model.Name)"></ValidationMessage>
-                    </label>
-                </div>
-                
-                <div class="my-8">
-                    <label for="type" class="mb-8">
-                        <div class="pb-2 font-semibold">Type</div>
-                        <InputSelect type="text" id="cardTypeId" DisplayName="Type" @bind-Value="@_model.CardTypeId">
-                            <option value="1">Baseball</option>
-                            <option value="2">Football</option>
-                        </InputSelect>
-                        <ValidationMessage For="@(() => _model.CardTypeId)"></ValidationMessage>
-                    </label>
-                </div>
-                
-                <div class="my-8">
-                    <label for="isActive" class="mb-8">
-                        <InputCheckbox @bind-Value="@_model.IsActive" />
-                        <span class="pl-2 font-semibold">Active</span>
-                    </label>
-                </div>
-                
-                <div class="mt-8">
-                    <button type="submit">Save</button>
-                    <a class="btn-secondary ml-2" href="/brands">Cancel</a>
-                </div>
-            </fieldset>
-        </EditForm>
-    </div>
-</main>
+<AuthorizeView>
+    <Authorized>
+        <main class="block small">
+            <div class="bg-white rounded-lg border-4 border-neutral-400 p-8">
+                <h1 class="text-3xl">Edit Brand</h1>
+                <EditForm Model="@_model" OnSubmit="@EditBrand" Context="EditBrandContext">
+                    <DataAnnotationsValidator/>
+                    
+                    @if (_pageError != "")
+                    {
+                        <div class="alert error mt-8 mb-0">
+                            @_pageError
+                        </div>
+                    }
+                    
+                    <fieldset disabled="@_isLoading" aria-busy="@_isLoading">
+                        <div class="my-8">
+                            <label for="name" class="mb-8">
+                                <div class="pb-2 font-semibold">Name</div>
+                                <InputText type="text" id="name" DisplayName="Name" @bind-Value="@_model.Name" maxlength="150" />
+                                <ValidationMessage For="@(() => _model.Name)"></ValidationMessage>
+                            </label>
+                        </div>
+                        
+                        <div class="my-8">
+                            <label for="cardTypeId" class="mb-8">
+                                <div class="pb-2 font-semibold">Type</div>
+                                <InputSelect type="text" id="cardTypeId" DisplayName="Type" @bind-Value="@_model.CardTypeId">
+                                    <option value="1">Baseball</option>
+                                    <option value="2">Football</option>
+                                </InputSelect>
+                                <ValidationMessage For="@(() => _model.CardTypeId)"></ValidationMessage>
+                            </label>
+                        </div>
+                        
+                        <div class="my-8">
+                            <label for="isActive" class="mb-8">
+                                <InputCheckbox id="isActive" @bind-Value="@_model.IsActive" />
+                                <span class="pl-2 font-semibold">Active</span>
+                            </label>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <button type="submit">Save</button>
+                            <a class="btn-secondary ml-2" href="/brands">Cancel</a>
+                        </div>
+                    </fieldset>
+                </EditForm>
+            </div>
+        </main>
+    </Authorized>
+    <NotAuthorized>
+        <PleaseLogin />
+    </NotAuthorized>
+</AuthorizeView>
 
 @code {
     [Parameter]
@@ -91,7 +98,6 @@
         
         if (!isValid)
         {
-            
             return;
         }
         
