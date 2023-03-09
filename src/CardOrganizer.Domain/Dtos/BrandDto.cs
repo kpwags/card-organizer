@@ -11,6 +11,6 @@ public class BrandDto
     public int CardTypeId { get; set; }
 
     public bool IsActive { get; set; } = true;
-    
-    public IEnumerable<BaseballCardDto> BaseballCards { get; set; } = Enumerable.Empty<BaseballCardDto>();
+
+    public List<BaseballCardDto> BaseballCards { get; set; } = new List<BaseballCardDto>();
 }

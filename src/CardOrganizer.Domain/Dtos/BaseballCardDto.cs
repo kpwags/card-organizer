@@ -20,6 +20,10 @@ public class BaseballCardDto
 
     public string Flags { get; set; } = string.Empty;
 
+    public string ImageUrl { get; set; } = string.Empty;
+    
+    public int Quantity { get; set; }
+
     public BrandDto Brand { get; set; } = new BrandDto();
 
     public UserAccountDto UserAccount { get; set; } = new UserAccountDto();

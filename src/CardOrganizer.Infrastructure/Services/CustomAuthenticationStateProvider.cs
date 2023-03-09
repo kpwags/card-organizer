@@ -30,6 +30,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
             {
                 identity = new ClaimsIdentity(new[]
                 {
+                    new Claim("UserAccountId", user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email ?? ""),
                     new Claim(ClaimTypes.Name, user.Name)
                 }, "CardOrgAuth ");
@@ -50,6 +51,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         
         var identity = new ClaimsIdentity(new[]
         {
+            new Claim("UserAccountId", user.UserAccountId.ToString()),
             new Claim(ClaimTypes.Email, user.Email),
             new Claim(ClaimTypes.Name, user.Name)
         });

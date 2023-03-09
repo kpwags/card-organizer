@@ -1,0 +1,277 @@
+@page "/baseball/edit/{baseballCardId:int}"
+
+@using CardOrganizer.ViewModels
+@using CardOrganizer.Domain
+@using CardOrganizer.Extensions
+
+@inject IBrandRespository BrandRespository
+@inject IBaseballCardRepository BaseballCardRepository
+@inject IFileService FileService
+@inject AuthenticationStateProvider AuthStateProvider
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
+
+<PageTitle>Edit New Baseball Card | Card Organizer</PageTitle>
+
+<AuthorizeView>
+    <Authorized>
+        <main class="block small">
+            <div class="bg-white rounded-lg border-4 border-neutral-400 p-8">
+                <h1 class="text-3xl">Edit Baseball Card</h1>
+                
+                <EditForm Model="@_model" OnSubmit="@EditCard" Context="EditBaseballCard">
+                    <DataAnnotationsValidator/>
+            
+                    @if (_pageError != "")
+                    {
+                        <div class="alert error mt-8 mb-0">
+                            @_pageError
+                        </div>
+                    }
+            
+                    <fieldset disabled="@_isLoading" aria-busy="@_isLoading">
+                        <div class="my-8">
+                            <label for="playerName" class="mb-8">
+                                <div class="pb-2 font-semibold">Player Name</div>
+                                <InputText type="text" id="playerName" DisplayName="Name" @bind-Value="@_model.PlayerName" maxlength="500" />
+                                <ValidationMessage For="@(() => _model.PlayerName)"></ValidationMessage>
+                            </label>
+                        </div>
+                
+                        <div class="my-8">
+                            <label for="brandId" class="mb-8">
+                                <div class="pb-2 font-semibold">Brand</div>
+                                <InputSelect type="text" id="brandId" DisplayName="Type" @bind-Value="@_model.BrandId">
+                                    @foreach (var brand in _brands.Where(b => b.IsActive))
+                                    {
+                                        <option value="@brand.BrandId">@brand.Name</option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => _model.BrandId)"></ValidationMessage>
+                            </label>
+                        </div>
+                        
+                        <div class="my-8">
+                            <label for="year" class="mb-8">
+                                <div class="pb-2 font-semibold">Year</div>
+                                <InputNumber type="text" id="year" DisplayName="Year" @bind-Value="@_model.Year" />
+                                <ValidationMessage For="@(() => _model.Year)"></ValidationMessage>
+                            </label>
+                        </div>
+                        
+                        <div class="my-8">
+                            <label for="cardNumber" class="mb-8">
+                                <div class="pb-2 font-semibold">Card Number</div>
+                                <InputNumber type="text" id="cardNumber" DisplayName="Card Number" @bind-Value="@_model.CardNumber" />
+                                <ValidationMessage For="@(() => _model.CardNumber)"></ValidationMessage>
+                            </label>
+                        </div>
+                
+                        <div class="my-8">
+                            <label for="team" class="mb-8">
+                                <div class="pb-2 font-semibold">Team</div>
+                                <InputSelect type="text" id="team" DisplayName="Team" @bind-Value="@_model.Team">
+                                    @foreach (var team in Constants.BaseballTeams)
+                                    {
+                                        <option value="@team">@team</option>
+                                    }
+                                </InputSelect>
+                                <ValidationMessage For="@(() => _model.Team)"></ValidationMessage>
+                            </label>
+                        </div>
+                        
+                        <div class="my-8">
+                            <label for="position" class="mb-8">
+                                <div class="pb-2 font-semibold">Position(s)</div>
+                                <InputText type="text" id="position" DisplayName="Position(s)" @bind-Value="@_model.Position" maxlength="150" />
+                                <ValidationMessage For="@(() => _model.Position)"></ValidationMessage>
+                            </label>
+                        </div>
+                        
+                        <div class="my-8">
+                            <label for="flags" class="mb-8">
+                                <div class="pb-2 font-semibold">Flag(s)</div>
+                                <InputText type="text" id="flags" DisplayName="Flags" @bind-Value="@_model.Flags" maxlength="150" />
+                                <div class="text-sm italic pl-2 pt-2">Rookie Card, All Star, etc.</div>
+                                <ValidationMessage For="@(() => _model.Flags)"></ValidationMessage>
+                            </label>
+                        </div>
+                        
+                        <div class="my-8">
+                            <label for="quantity" class="mb-8">
+                                <div class="pb-2 font-semibold">Quantity</div>
+                                <InputNumber type="text" id="quantity" DisplayName="Quantity" @bind-Value="@_model.Quantity" />
+                                <ValidationMessage For="@(() => _model.Quantity)"></ValidationMessage>
+                            </label>
+                        </div>
+                        
+                        @if (_cardImageData != string.Empty)
+                        {
+                            <div class="my-8">
+                                <img src="@_cardImageData" alt="@_model.PlayerName" style="max-width: 100%"/>
+                                
+                                <div class="mt-4">
+                                    <button class="btn-danger btn-small" onclick="@(() => DeleteImage())">Delete Image</button>
+                                </div>
+                            </div>
+                        }
+                        
+                        <div class="my-8">
+                            <label for="cardImage">
+                                <div class="pb-2 font-semibold">Replace Image</div>
+                                <InputFile id="cardImage" OnChange="OnInputFileChange" />
+                            </label>
+                        </div>
+                
+                        <div class="mt-8">
+                            <button type="submit">Save Changes</button>
+                            <a class="btn-secondary ml-2" href="/baseball/manage">Cancel</a>
+                        </div>
+                    </fieldset>
+                </EditForm>
+            </div>
+        </main>
+    </Authorized>
+    <NotAuthorized>
+        <PleaseLogin />
+    </NotAuthorized>
+</AuthorizeView>
+
+@code {
+    [Parameter]
+    public int BaseballCardId { get; set; }
+    
+    private readonly EditBaseballCardViewModel _model = new();
+    private bool _isLoading = true;
+    private string _pageError = string.Empty;
+    private string _cardImageData = string.Empty;
+    
+    private IReadOnlyCollection<Brand> _brands = Array.Empty<Brand>();
+    IReadOnlyList<IBrowserFile> _selectedFiles = Array.Empty<IBrowserFile>();
+
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        _selectedFiles = e.GetMultipleFiles();
+        this.StateHasChanged();
+    }
+
+    private async Task DeleteImage()
+    {
+        if (!await JsRuntime.Confirm("Are you sure you want to delete this image?"))
+        {
+            return;
+        }
+        
+        try
+        {
+            _isLoading = true;
+
+            await BaseballCardRepository.RemoveImageFromBaseballCard(BaseballCardId);
+            
+            _cardImageData = string.Empty;
+        }
+        catch (Exception e)
+        {
+            _pageError = e.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _brands = await Task.FromResult(
+                BrandRespository
+                    .GetAll()
+                    .ToList()
+                );
+
+            var card = BaseballCardRepository.GetById(BaseballCardId);
+
+            _model.BaseballCardId = BaseballCardId;
+            _model.BrandId = card.BrandId;
+            _model.Flags = card.Flags;
+            _model.Position = card.PlayerPosition;
+            _model.Quantity = card.Quantity;
+            _model.Team = card.Team;
+            _model.Year = card.Year;
+            _model.CardNumber = card.CardNumber;
+            _model.PlayerName = card.PlayerName;
+
+            _cardImageData = FileService.GetImage(Constants.CardType.Baseball, BaseballCardId);
+        }
+        catch (Exception e)
+        {
+            _pageError = e.Message;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async void EditCard(EditContext editContext)
+    {
+        _pageError = string.Empty;
+        
+        bool isValid = editContext.Validate();
+        
+        if (!isValid)
+        {
+            return;
+        }
+        
+        _isLoading = true;
+        
+        try
+        {
+            var user = (await AuthStateProvider.GetAuthenticationStateAsync()).User;
+
+            var userId = user.Claims.FirstOrDefault(c => c.Type == "UserAccountId");
+
+            if (userId is null)
+            {
+                throw new Exception("Unable to identify logged in user");
+            }
+
+            var userAccountId = int.Parse(userId.Value);
+
+            await BaseballCardRepository.Update(new BaseballCard
+            {
+                BaseballCardId = BaseballCardId,
+                BrandId = _model.BrandId,
+                UserAccountId = userAccountId,
+                Year = _model.Year ?? 1900,
+                CardNumber = _model.CardNumber ?? 0,
+                PlayerName = _model.PlayerName,
+                PlayerPosition = _model.Position,
+                Team = _model.Team,
+                Flags = _model.Flags,
+                Quantity = _model.Quantity,
+            });
+            
+            if (_selectedFiles.Any())
+            {
+                var file = _selectedFiles[0];
+                var stream = file.OpenReadStream();
+                
+                await BaseballCardRepository.AddImageToBaseballCard(BaseballCardId, file.Name, stream);
+            }
+            
+            _isLoading = false;
+            
+            NavigationManager.NavigateTo("/baseball/manage");
+        }
+        catch (Exception e)
+        {
+            _pageError = e.Message;
+            _isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+}

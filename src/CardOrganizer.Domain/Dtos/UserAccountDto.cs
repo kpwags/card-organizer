@@ -6,5 +6,5 @@ public class UserAccountDto : Microsoft.AspNetCore.Identity.IdentityUser<int>
 {
     [PersonalData] public string Name { get; set; } = string.Empty;
 
-    [PersonalData] public IEnumerable<BaseballCardDto> BaseballCards { get; set; } = Enumerable.Empty<BaseballCardDto>();
+    [PersonalData] public List<BaseballCardDto> BaseballCards { get; set; } = new List<BaseballCardDto>();
 }

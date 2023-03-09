@@ -6,7 +6,7 @@ public interface IRepository<T>
 
     IQueryable<T> GetAll();
 
-    Task Add(T entity);
+    Task<int> Add(T entity);
     
     Task Update(T entity);
 

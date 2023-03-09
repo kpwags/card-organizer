@@ -506,6 +506,9 @@ video {
 .ml-2 {
   margin-left: 0.5rem;
 }
+.mt-4 {
+  margin-top: 1rem;
+}
 .block {
   display: block;
 }
@@ -526,6 +529,9 @@ video {
 }
 .w-1\/2 {
   width: 50%;
+}
+.table-auto {
+  table-layout: auto;
 }
 .table-fixed {
   table-layout: fixed;
@@ -591,6 +597,9 @@ video {
 }
 .pl-2 {
   padding-left: 0.5rem;
+}
+.pt-2 {
+  padding-top: 0.5rem;
 }
 .pr-4 {
   padding-right: 1rem;
@@ -672,6 +681,7 @@ a, .btn-link {
 }
 
 input[type="text"],
+input[type="number"],
 input[type="email"],
 input[type="password"] {
     display: block;
@@ -709,6 +719,14 @@ button[type="submit"]:active:focus {
     background-color: rgb(2, 73, 1);
 }
 
+input[type=file]::file-selector-button {
+    border: 1px solid rgb(2, 73, 1);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    margin-right: 1rem;
+}
+
 .btn-primary {
     background-color: rgb(0, 104, 34);
     border: 1px solid rgb(0, 115, 34);
@@ -734,6 +752,24 @@ button[type="submit"]:active:focus {
 .btn-secondary:hover {
     text-decoration: none;
     background-color: hsl(0, 0%, 70%);
+}
+
+.btn-danger {
+    border: 1px solid rgb(204, 0, 0);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    margin-right: 1rem;
+    color: rgb(204, 0, 0);
+}
+
+.btn-danger:hover {
+    border-color: rgb(153, 0, 0);
+    color: rgb(153, 0, 0);
+}
+
+.btn-danger.btn-small {
+    padding: 0.25rem 1rem;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
@@ -776,6 +812,7 @@ header .site-title a:hover {
 .alert {
     padding: 1rem;
     border-radius: 0.5rem;
+    overflow-wrap: anywhere;
 }
 
 .alert.error {

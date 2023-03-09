@@ -20,6 +20,10 @@ public class BaseballCard
 
     public string Flags { get; set; } = string.Empty;
 
+    public string ImageUrl { get; set; } = string.Empty;
+    
+    public int Quantity { get; set; }
+
     public Brand Brand { get; set; } = new Brand();
 
     public UserAccount UserAccount { get; set; } = new UserAccount();
@@ -35,6 +39,8 @@ public class BaseballCard
         PlayerPosition = dto.PlayerPosition,
         Team = dto.Team,
         Flags = dto.Flags,
+        ImageUrl = dto.ImageUrl,
+        Quantity = dto.Quantity,
         Brand = Brand.FromDto(dto.Brand),
         UserAccount = UserAccount.FromDto(dto.UserAccount)
     };

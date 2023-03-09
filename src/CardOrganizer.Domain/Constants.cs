@@ -27,6 +27,7 @@ public static class Constants
         "Miami Marlins",
         "Milwaukee Brewers",
         "Minnesota Twins",
+        "Montreal Expos",
         "New York Yankees",
         "New York Mets",
         "Oakland Athletics",
@@ -41,4 +42,12 @@ public static class Constants
         "Toronto Blue Jays",
         "Washington Nationals",
     };
+    
+    public enum ImageType
+    {
+        Jpeg,
+        Png,
+        Gif,
+        Unknown
+    }
 }
