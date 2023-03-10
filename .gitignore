@@ -371,3 +371,5 @@ appsettings.test.json
 # Jetbrains
 
 .idea
+
+src/CardOrganizer/uploads

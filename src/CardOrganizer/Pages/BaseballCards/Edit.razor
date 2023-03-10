@@ -105,21 +105,61 @@
                             </label>
                         </div>
                         
-                        @if (_cardImageData != string.Empty)
+                        <div class="mt-8 font-semibold text-xl">Front Image</div>
+                        
+                        @if (_cardFrontImageData != string.Empty)
                         {
-                            <div class="my-8">
-                                <img src="@_cardImageData" alt="@_model.PlayerName" style="max-width: 100%"/>
+                            <div class="mb-8">
+                                <img src="@_cardFrontImageData" alt="@_model.PlayerName" style="max-width: 100%"/>
                                 
                                 <div class="mt-4">
-                                    <button class="btn-danger btn-small" onclick="@(() => DeleteImage())">Delete Image</button>
+                                    <button class="btn-danger btn-small" onclick="@(() => DeleteImage(Constants.CardSide.Front))">Delete Image</button>
                                 </div>
                             </div>
                         }
                         
                         <div class="my-8">
-                            <label for="cardImage">
-                                <div class="pb-2 font-semibold">Replace Image</div>
-                                <InputFile id="cardImage" OnChange="OnInputFileChange" />
+                            <label for="cardFrontImage">
+                                <div class="pb-2 font-semibold">
+                                @if (_cardFrontImageData != string.Empty)
+                                {
+                                    <span>Replace Image</span>
+                                }
+                                else
+                                {
+                                    <span>Add Image</span>
+                                }
+                                </div>
+                                <InputFile id="cardFrontImage" OnChange="OnFrontImageChanged" />
+                            </label>
+                        </div>
+                        
+                        <div class="mt-8 font-semibold text-xl">Back Image</div>
+                        
+                        @if (_cardBackImageData != string.Empty)
+                        {
+                            <div class="mb-8">
+                                <img src="@_cardBackImageData" alt="@_model.PlayerName" style="max-width: 100%"/>
+                                
+                                <div class="mt-4">
+                                    <button class="btn-danger btn-small" onclick="@(() => DeleteImage(Constants.CardSide.Back))">Delete Image</button>
+                                </div>
+                            </div>
+                        }
+                        
+                        <div class="my-8">
+                            <label for="cardBackImage">
+                                <div class="pb-2 font-semibold">
+                                    @if (_cardBackImageData != string.Empty)
+                                    {
+                                        <span>Replace Image</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Add Image</span>
+                                    }
+                                </div>
+                                <InputFile id="cardBackImage" OnChange="OnBackImageChanged" />
                             </label>
                         </div>
                 
@@ -144,18 +184,26 @@
     private readonly EditBaseballCardViewModel _model = new();
     private bool _isLoading = true;
     private string _pageError = string.Empty;
-    private string _cardImageData = string.Empty;
+    private string _cardFrontImageData = string.Empty;
+    private string _cardBackImageData = string.Empty;
     
     private IReadOnlyCollection<Brand> _brands = Array.Empty<Brand>();
-    IReadOnlyList<IBrowserFile> _selectedFiles = Array.Empty<IBrowserFile>();
+    IReadOnlyList<IBrowserFile> _frontImageFiles = Array.Empty<IBrowserFile>();
+    IReadOnlyList<IBrowserFile> _backImageFiles = Array.Empty<IBrowserFile>();
 
-    private void OnInputFileChange(InputFileChangeEventArgs e)
+    void OnFrontImageChanged(InputFileChangeEventArgs e)
     {
-        _selectedFiles = e.GetMultipleFiles();
-        this.StateHasChanged();
+        _frontImageFiles = e.GetMultipleFiles();
+        StateHasChanged();
+    }
+    
+    void OnBackImageChanged(InputFileChangeEventArgs e)
+    {
+        _backImageFiles = e.GetMultipleFiles();
+        StateHasChanged();
     }
 
-    private async Task DeleteImage()
+    private async Task DeleteImage(Constants.CardSide side)
     {
         if (!await JsRuntime.Confirm("Are you sure you want to delete this image?"))
         {
@@ -166,9 +214,17 @@
         {
             _isLoading = true;
 
-            await BaseballCardRepository.RemoveImageFromBaseballCard(BaseballCardId);
-            
-            _cardImageData = string.Empty;
+            await BaseballCardRepository.RemoveImageFromBaseballCard(BaseballCardId, side);
+
+            if (side == Constants.CardSide.Front)
+            {
+                _cardFrontImageData = string.Empty;
+            }
+
+            if (side == Constants.CardSide.Back)
+            {
+                _cardBackImageData = string.Empty;
+            }
         }
         catch (Exception e)
         {
@@ -202,7 +258,8 @@
             _model.CardNumber = card.CardNumber;
             _model.PlayerName = card.PlayerName;
 
-            _cardImageData = FileService.GetImage(Constants.CardType.Baseball, BaseballCardId);
+            _cardFrontImageData = FileService.GetImage(Constants.CardType.Baseball, BaseballCardId);
+            _cardBackImageData = FileService.GetImage(Constants.CardType.Baseball, BaseballCardId, Constants.CardSide.Back);
         }
         catch (Exception e)
         {
@@ -254,12 +311,20 @@
                 Quantity = _model.Quantity,
             });
             
-            if (_selectedFiles.Any())
+            if (_frontImageFiles.Any())
             {
-                var file = _selectedFiles[0];
+                var file = _frontImageFiles[0];
                 var stream = file.OpenReadStream();
                 
-                await BaseballCardRepository.AddImageToBaseballCard(BaseballCardId, file.Name, stream);
+                await BaseballCardRepository.AddImageToBaseballCard(BaseballCardId, file.Name, Constants.CardSide.Front, stream);
+            }
+
+            if (_backImageFiles.Any())
+            {
+                var file = _backImageFiles[0];
+                var stream = file.OpenReadStream();
+                
+                await BaseballCardRepository.AddImageToBaseballCard(BaseballCardId, file.Name, Constants.CardSide.Back, stream);
             }
             
             _isLoading = false;

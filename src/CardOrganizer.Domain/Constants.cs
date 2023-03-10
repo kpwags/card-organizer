@@ -50,4 +50,10 @@ public static class Constants
         Gif,
         Unknown
     }
+
+    public enum CardSide
+    {
+        Back,
+        Front,
+    }
 }

@@ -102,9 +102,16 @@
                         </div>
                         
                         <div class="my-8">
-                            <label for="cardImage">
-                                <div class="pb-2 font-semibold">Image</div>
-                                <InputFile id="cardImage" OnChange="OnInputFileChange" />
+                            <label for="cardFrontImage">
+                                <div class="pb-2 font-semibold">Front Image</div>
+                                <InputFile id="cardFrontImage" OnChange="OnFrontImageChanged" />
+                            </label>
+                        </div>
+                        
+                        <div class="my-8">
+                            <label for="cardBackImage">
+                                <div class="pb-2 font-semibold">Back Image</div>
+                                <InputFile id="cardBackImage" OnChange="OnBackImageChanged" />
                             </label>
                         </div>
                 
@@ -128,11 +135,18 @@
     private string _pageError = string.Empty;
     
     private IReadOnlyCollection<Brand> _brands = Array.Empty<Brand>();
-    IReadOnlyList<IBrowserFile> _selectedFiles = Array.Empty<IBrowserFile>();
+    IReadOnlyList<IBrowserFile> _frontImageFiles = Array.Empty<IBrowserFile>();
+    IReadOnlyList<IBrowserFile> _backImageFiles = Array.Empty<IBrowserFile>();
 
-    void OnInputFileChange(InputFileChangeEventArgs e)
+    void OnFrontImageChanged(InputFileChangeEventArgs e)
     {
-        _selectedFiles = e.GetMultipleFiles();
+        _frontImageFiles = e.GetMultipleFiles();
+        this.StateHasChanged();
+    }
+    
+    void OnBackImageChanged(InputFileChangeEventArgs e)
+    {
+        _backImageFiles = e.GetMultipleFiles();
         this.StateHasChanged();
     }
 
@@ -184,12 +198,20 @@
                 Quantity = _model.Quantity,
             });
 
-            if (_selectedFiles.Any())
+            if (_frontImageFiles.Any())
             {
-                var file = _selectedFiles[0];
+                var file = _frontImageFiles[0];
                 var stream = file.OpenReadStream();
                 
-                await BaseballCardRepository.AddImageToBaseballCard(baseballCardId, file.Name, stream);
+                await BaseballCardRepository.AddImageToBaseballCard(baseballCardId, file.Name, Constants.CardSide.Front, stream);
+            }
+
+            if (_backImageFiles.Any())
+            {
+                var file = _backImageFiles[0];
+                var stream = file.OpenReadStream();
+                
+                await BaseballCardRepository.AddImageToBaseballCard(baseballCardId, file.Name, Constants.CardSide.Back, stream);
             }
 
             _isLoading = false;

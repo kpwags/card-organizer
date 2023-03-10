@@ -16,7 +16,7 @@ public class FileService : IFileService
         _hostEnvironment = hostEnvironment;
     }
     
-    public async Task<string> SaveImage(Stream stream, Constants.CardType cardType, int id, string imageName)
+    public async Task<string> SaveImage(Stream stream, Constants.CardType cardType, int id, string imageName, Constants.CardSide side = Constants.CardSide.Front)
     {
         var file = new FileInfo(imageName);
 
@@ -36,7 +36,7 @@ public class FileService : IFileService
             Directory.CreateDirectory($"uploads/{directory}");
         }
 
-        var filename = Path.Combine(_hostEnvironment.ContentRootPath, $"uploads/{directory}/{id}.jpg");
+        var filename = Path.Combine(_hostEnvironment.ContentRootPath, $"uploads/{directory}/{id}_{side.ToString().ToLower()}.jpg");
 
         using var memoryStream = new MemoryStream();
         
@@ -49,10 +49,10 @@ public class FileService : IFileService
         return filename;
     }
 
-    public string GetImage(Constants.CardType cardType, int id)
+    public string GetImage(Constants.CardType cardType, int id, Constants.CardSide side = Constants.CardSide.Front)
     {
         var directory = GetDirectory(cardType);
-        var imageFilename = Path.Combine(_hostEnvironment.ContentRootPath, $"uploads/{directory}/{id}.jpg");
+        var imageFilename = Path.Combine(_hostEnvironment.ContentRootPath, $"uploads/{directory}/{id}_{side.ToString().ToLower()}.jpg");
 
         if (!File.Exists(imageFilename))
         {
@@ -62,11 +62,11 @@ public class FileService : IFileService
         return _imageService.ConvertToBase64(imageFilename);
     }
 
-    public void DeleteImage(Constants.CardType cardType, int id)
+    public void DeleteImage(Constants.CardType cardType, int id, Constants.CardSide side = Constants.CardSide.Front)
     {
         var directory = GetDirectory(cardType);
         
-        var imageFilename = Path.Combine(_hostEnvironment.ContentRootPath, $"uploads/{directory}/{id}.jpg");
+        var imageFilename = Path.Combine(_hostEnvironment.ContentRootPath, $"uploads/{directory}/{id}_{side.ToString().ToLower()}.jpg");
 
         if (File.Exists(imageFilename))
         {

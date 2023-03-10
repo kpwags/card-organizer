@@ -34,6 +34,4 @@ public class AddBaseballCardViewModel
     [Range(1, int.MaxValue, ErrorMessage = "Quantity is required")]
     [Required(ErrorMessage = "Quantity is required")]
     public int Quantity { get; set; } = 1;
-    
-    public string CardImage { get; set; } = string.Empty;
 }

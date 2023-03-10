@@ -20,7 +20,9 @@ public class BaseballCardDto
 
     public string Flags { get; set; } = string.Empty;
 
-    public string ImageUrl { get; set; } = string.Empty;
+    public string FrontImageUrl { get; set; } = string.Empty;
+
+    public string BackImageUrl { get; set; } = string.Empty;
     
     public int Quantity { get; set; }
 

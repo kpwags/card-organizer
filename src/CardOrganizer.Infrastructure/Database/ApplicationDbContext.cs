@@ -78,7 +78,12 @@ public class ApplicationDbContext : IdentityDbContext<UserAccountDto, IdentityRo
             .IsRequired();
         
         builder.Entity<BaseballCardDto>()
-            .Property(b => b.ImageUrl)
+            .Property(b => b.FrontImageUrl)
+            .HasMaxLength(255)
+            .IsRequired();
+        
+        builder.Entity<BaseballCardDto>()
+            .Property(b => b.BackImageUrl)
             .HasMaxLength(255)
             .IsRequired();
 

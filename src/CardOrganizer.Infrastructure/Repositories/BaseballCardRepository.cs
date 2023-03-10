@@ -104,13 +104,14 @@ public class BaseballCardRepository : IBaseballCardRepository
         var dbContext = await _contextFactory.CreateDbContextAsync();
 
         _fileService.DeleteImage(Constants.CardType.Baseball, baseballCardId);
+        _fileService.DeleteImage(Constants.CardType.Baseball, baseballCardId, Constants.CardSide.Back);
         
         await dbContext.BaseballCards.Where(b => b.BaseballCardId == baseballCardId).ExecuteDeleteAsync();
 
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task AddImageToBaseballCard(int id, string filename, Stream stream)
+    public async Task AddImageToBaseballCard(int id, string filename, Constants.CardSide side, Stream stream)
     {
         var dbContext = await _contextFactory.CreateDbContextAsync();
         
@@ -121,21 +122,26 @@ public class BaseballCardRepository : IBaseballCardRepository
             throw new ObjectNotFoundException("Unable to find the specified brand");
         }
 
-        if (baseballCard.ImageUrl != string.Empty)
+        if (side == Constants.CardSide.Front && baseballCard.FrontImageUrl != string.Empty)
         {
             _fileService.DeleteImage(Constants.CardType.Baseball, id);
         }
+        
+        if (side == Constants.CardSide.Back && baseballCard.BackImageUrl != string.Empty)
+        {
+            _fileService.DeleteImage(Constants.CardType.Baseball, id, Constants.CardSide.Back);
+        }
 
-        var savedFile = await _fileService.SaveImage(stream, Constants.CardType.Baseball, id, filename);
+        var savedFile = await _fileService.SaveImage(stream, Constants.CardType.Baseball, id, filename, side);
 
-        baseballCard.ImageUrl = savedFile;
+        baseballCard.FrontImageUrl = savedFile;
 
         dbContext.Update(baseballCard);
 
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task RemoveImageFromBaseballCard(int id)
+    public async Task RemoveImageFromBaseballCard(int id, Constants.CardSide side)
     {
         var dbContext = await _contextFactory.CreateDbContextAsync();
         
@@ -146,9 +152,9 @@ public class BaseballCardRepository : IBaseballCardRepository
             throw new ObjectNotFoundException("Unable to find the specified brand");
         }
 
-        _fileService.DeleteImage(Constants.CardType.Baseball, id);
+        _fileService.DeleteImage(Constants.CardType.Baseball, id, side);
 
-        baseballCard.ImageUrl = "";
+        baseballCard.FrontImageUrl = "";
 
         dbContext.Update(baseballCard);
 
