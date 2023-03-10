@@ -10,7 +10,7 @@ public class ApplicationDbContext : IdentityDbContext<UserAccountDto, IdentityRo
 {
     public DbSet<BrandDto> Brands { get; set; }
     
-    public DbSet<BaseballCard> BaseballCards { get; set; }
+    public DbSet<BaseballCardDto> BaseballCards { get; set; }
     
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
@@ -76,6 +76,21 @@ public class ApplicationDbContext : IdentityDbContext<UserAccountDto, IdentityRo
             .Property(b => b.Flags)
             .HasMaxLength(100)
             .IsRequired();
+        
+        builder.Entity<BaseballCardDto>()
+            .Property(b => b.FrontImageUrl)
+            .HasMaxLength(255)
+            .IsRequired();
+        
+        builder.Entity<BaseballCardDto>()
+            .Property(b => b.BackImageUrl)
+            .HasMaxLength(255)
+            .IsRequired();
+
+        builder.Entity<BaseballCardDto>()
+            .Property(b => b.Quantity)
+            .IsRequired()
+            .HasDefaultValue(1);
 
         builder.Entity<BaseballCardDto>()
             .HasOne(bc => bc.Brand)

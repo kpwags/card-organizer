@@ -38,18 +38,22 @@ public class BrandRepository : IBrandRespository
             .Select(b => Brand.FromDto(b));
     }
 
-    public async Task Add(Brand brand)
+    public async Task<int> Add(Brand brand)
     {
         var dbContext = await _contextFactory.CreateDbContextAsync();
 
-        dbContext.Brands.Add(new BrandDto
+        var newBrand = new BrandDto
         {
             Name = brand.Name,
             IsActive = brand.IsActive,
             CardTypeId = (int)brand.CardType,
-        });
+        };
+        
+        dbContext.Brands.Add(newBrand);
 
         await dbContext.SaveChangesAsync();
+
+        return newBrand.BrandId;
     }
 
     public async Task Update(Brand brand)
