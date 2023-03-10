@@ -206,16 +206,17 @@
             _ => BaseballCardSort.NameAsc    
         };
         
+        _pageNumber = 1;
+        _lastPage = (int)Math.Ceiling((double)_allCards.Count / (double)_cardsPerPage);
+        
         SortCards();
     }
 
     private void SortCards()
     {
-        _pageNumber = 1;
-        _lastPage = (int)Math.Ceiling((double)_allCards.Count / (double)_cardsPerPage);
         var cards = _allCards
-            .Take(_cardsPerPage)
-            .ToList();
+            .Skip((_pageNumber - 1) * _cardsPerPage)
+            .Take(_cardsPerPage);
 
         _displayedCards = _currentSort switch
         {
@@ -269,9 +270,6 @@
 
         await GetAllCards();
         
-        _displayedCards = _allCards
-            .Skip((_pageNumber - 1) * _cardsPerPage)
-            .Take(_cardsPerPage)
-            .ToList();
+        SortCards();
     }
 }
