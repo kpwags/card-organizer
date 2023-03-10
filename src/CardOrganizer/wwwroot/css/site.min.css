@@ -509,6 +509,9 @@ video {
 .mt-4 {
   margin-top: 1rem;
 }
+.mt-16 {
+  margin-top: 4rem;
+}
 .block {
   display: block;
 }
@@ -530,14 +533,17 @@ video {
 .w-1\/2 {
   width: 50%;
 }
-.table-auto {
-  table-layout: auto;
-}
 .table-fixed {
   table-layout: fixed;
 }
+.cursor-pointer {
+  cursor: pointer;
+}
 .items-center {
   align-items: center;
+}
+.justify-center {
+  justify-content: center;
 }
 .justify-between {
   justify-content: space-between;
@@ -603,6 +609,9 @@ video {
 }
 .pr-4 {
   padding-right: 1rem;
+}
+.pr-2 {
+  padding-right: 0.5rem;
 }
 .text-left {
   text-align: left;
@@ -807,6 +816,14 @@ header .site-title a,
 header .site-title a:hover {
     color: #fff;
     text-decoration: none;
+}
+
+.standard-table thead tr th {
+    background: #e5e7eb;
+}
+
+.standard-table thead tr th svg {
+    display: inline-block;
 }
 
 .standard-table tbody tr:nth-child(even) {

@@ -113,7 +113,7 @@
                                 <img src="@_cardFrontImageData" alt="@_model.PlayerName" style="max-width: 100%"/>
                                 
                                 <div class="mt-4">
-                                    <button class="btn-danger btn-small" onclick="@(() => DeleteImage(Constants.CardSide.Front))">Delete Image</button>
+                                    <button type="button" class="btn-danger btn-small" onclick="@(() => DeleteImage(Constants.CardSide.Front))">Delete Image</button>
                                 </div>
                             </div>
                         }
@@ -142,7 +142,7 @@
                                 <img src="@_cardBackImageData" alt="@_model.PlayerName" style="max-width: 100%"/>
                                 
                                 <div class="mt-4">
-                                    <button class="btn-danger btn-small" onclick="@(() => DeleteImage(Constants.CardSide.Back))">Delete Image</button>
+                                    <button type="button" class="btn-danger btn-small" onclick="@(() => DeleteImage(Constants.CardSide.Back))">Delete Image</button>
                                 </div>
                             </div>
                         }

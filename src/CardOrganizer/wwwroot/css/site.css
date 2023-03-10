@@ -155,6 +155,14 @@ header .site-title a:hover {
     text-decoration: none;
 }
 
+.standard-table thead tr th {
+    background: #e5e7eb;
+}
+
+.standard-table thead tr th svg {
+    display: inline-block;
+}
+
 .standard-table tbody tr:nth-child(even) {
     background: #f2f2f2;
 }
