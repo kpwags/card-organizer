@@ -1,0 +1,113 @@
+@using CardOrganizer.Application.Models
+@using CardOrganizer.Domain
+@inject IBrandRespository BrandRespository
+
+<div class="mb-8">
+    <div class="flex gap-8">
+        <button
+            type="button"
+            class="btn-ghost"
+            disabled="@Disabled"
+            onclick="@ToggleVisibility"
+        >
+            @(Visible ? "Hide Filters" : "Show Filters")
+        </button>
+        
+        @if (_filters.HasFiltersApplied)
+        {
+            <button
+                type="button"
+                class="btn-danger"
+                disabled="@Disabled"
+                onclick="@ClearFilters"
+            >
+                Clear Filters
+            </button>
+        }
+    </div>
+    
+    @if (Visible)
+    {
+        <div class="mt-8 mb-16 border-2 border-primary w-2/6">
+            <h2 class="text-primary text-xl font-semibold p-6">Filters</h2>
+            <EditForm Model="@_filters" OnSubmit="@ApplyFilters" Context="FilterBaseballCards" class="px-6 pb-6">
+                <div class="mb-8">
+                    <label for="team" class="mb-8">
+                        <div class="pb-2 font-semibold">Team</div>
+                        <InputSelect type="text" id="team" DisplayName="Team" @bind-Value="@_filters.Team">
+                            @foreach (var team in Constants.BaseballTeams)
+                            {
+                                <option value="@team">@team</option>
+                            }
+                        </InputSelect>
+                    </label>
+                </div>
+
+                <div class="my-8">
+                    <label for="brandId" class="mb-8">
+                        <div class="pb-2 font-semibold">Brand</div>
+                        <InputSelect type="text" id="brandId" DisplayName="Brand" @bind-Value="@_filters.BrandId">
+                            @foreach (var brand in _brands.Where(b => b.IsActive))
+                            {
+                                <option value="@brand.BrandId">@brand.Name</option>
+                            }
+                        </InputSelect>
+                    </label>
+                </div>
+                
+                <div class="my-8">
+                    <label for="year" class="mb-8">
+                        <div class="pb-2 font-semibold">Year</div>
+                        <InputNumber type="text" id="year" DisplayName="Year" @bind-Value="@_filters.Year" />
+                    </label>
+                </div>
+                
+                <div class="mt-8">
+                    <button type="button" class="btn-primary" @onclick="@ApplyFilters">Apply Filters</button>
+                </div>
+            </EditForm>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public bool Visible { get; set; }
+    
+    [Parameter]
+    public bool Disabled { get; set; }
+    
+    [Parameter]
+    public EventCallback<BaseballCardFilters> OnApplyFilters { get; set; }
+
+    private IReadOnlyCollection<Brand> _brands = Array.Empty<Brand>();
+    private BaseballCardFilters _filters = new();
+
+    private void ToggleVisibility()
+    {
+        Visible = !Visible;
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        _brands = await Task.FromResult(
+            BrandRespository
+                .GetAll()
+                .ToList()
+            );
+    }
+
+    private void ApplyFilters()
+    {
+        OnApplyFilters.InvokeAsync(_filters);
+        Visible = false;
+    }
+
+    private void ClearFilters()
+    {
+        _filters = new();
+        
+        OnApplyFilters.InvokeAsync(_filters);
+        Visible = false;
+    }
+}

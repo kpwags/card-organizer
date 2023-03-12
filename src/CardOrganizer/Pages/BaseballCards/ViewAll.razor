@@ -1,0 +1,116 @@
+@page "/baseball"
+@using CardOrganizer.Application.Models
+
+@inject IBaseballCardRepository BaseballCardRepository
+
+<main>
+    <div class="flex justify-between mb-8">
+        <h1 class="text-3xl text-primary">Baseball Cards</h1>
+        @if (_totalCards > 0)
+        {
+            <div>
+                <CardPagination
+                    CurrentPage="@_pageNumber"
+                    LastPage="@_lastPage"
+                    CardsPerPage="@_cardsPerPage"
+                    TotalCardCount="@_totalCards"
+                    OnNextClick="@(() => ChangePage(_pageNumber + 1))"
+                    OnPreviousClick="@(() => ChangePage(_pageNumber - 1))"
+                />
+            </div>
+        }
+    </div>
+    
+    <BaseballCardFilter
+        Visible="false"
+        Disabled="@_isLoading"
+        OnApplyFilters="@(ApplyFilters)"
+    />
+    
+    @if (_isLoading)
+    {
+        <LoadingIndicator IsLoading="true" Tip="Loading..."/>
+    }
+    
+    <div class="baseball-card-grid gap-8">
+        @foreach (var card in _baseballCards)
+        {
+            <BaseballCardItem Card="@card" />
+        }
+    </div>
+    
+    @if (_totalCards > 0)
+    {
+        <div class="flex mt-16 justify-center">
+            <CardPagination
+                CurrentPage="@_pageNumber"
+                LastPage="@_lastPage"
+                CardsPerPage="@_cardsPerPage"
+                TotalCardCount="@_totalCards"
+                OnNextClick="@(() => ChangePage(_pageNumber + 1))"
+                OnPreviousClick="@(() => ChangePage(_pageNumber - 1))"
+            />
+        </div>
+    }
+</main>
+
+@code {
+    private List<BaseballCard> _baseballCards = new();
+    private bool _isLoading = true;
+    private int _pageNumber = 1;
+    private int _cardsPerPage = 20;
+    private int _lastPage = 1;
+    private int _totalCards;
+    private BaseballCardFilters _filters = new();
+    
+    private int CardsPerPage
+    {
+        get => _cardsPerPage;
+        set
+        {
+            _cardsPerPage = value;
+            _pageNumber = 1;
+            GetAllCards();
+        }
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        Console.WriteLine("Initializing...");
+        await Task.Run(GetAllCards);
+        
+        _isLoading = false;
+    }
+
+    private void GetAllCards()
+    {
+        _baseballCards.Clear();
+        
+        var data = BaseballCardRepository.GetAllPaginatedWithImageData(_filters, _pageNumber, _cardsPerPage);
+
+        _totalCards = data.TotalCards;
+        _baseballCards = data.Cards.ToList();
+
+        _lastPage = (int)Math.Ceiling((double)_totalCards / (double)_cardsPerPage);
+    }
+
+    private void ChangePage(int pg)
+    {
+        _pageNumber = pg;
+
+        GetAllCards();
+    }
+
+    private void ApplyFilters(BaseballCardFilters filters)
+    {
+        _isLoading = true;
+        
+        _filters = filters;
+        
+        _pageNumber = 1;
+        
+        GetAllCards();
+        
+        _isLoading = false;
+    }
+}
