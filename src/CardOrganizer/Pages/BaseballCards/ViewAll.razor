@@ -4,11 +4,11 @@
 @inject IBaseballCardRepository BaseballCardRepository
 
 <main>
-    <div class="flex justify-between mb-8">
-        <h1 class="text-3xl text-primary">Baseball Cards</h1>
+    <div class="sm:block md:flex justify-between mb-8 items-center">
+        <h1 class="text-3xl text-primary mb-4 md:mb-0 lg:mb-0">Baseball Cards</h1>
         @if (_totalCards > 0)
         {
-            <div>
+            <div class="flex justify-center">
                 <CardPagination
                     CurrentPage="@_pageNumber"
                     LastPage="@_lastPage"

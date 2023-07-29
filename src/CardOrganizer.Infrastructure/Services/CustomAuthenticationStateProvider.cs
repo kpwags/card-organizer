@@ -33,7 +33,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
                     new Claim("UserAccountId", user.Id.ToString()),
                     new Claim(ClaimTypes.Email, user.Email ?? ""),
                     new Claim(ClaimTypes.Name, user.Name)
-                }, "CardOrgAuth ");
+                }, "CardOrgAuth");
             }
             else
             {
@@ -45,7 +45,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         return await Task.FromResult(new AuthenticationState(new ClaimsPrincipal(identity)));
     }
 
-    public async Task AuthenticateUser(UserAccount user)
+    public async Task StartUserSession(UserAccount user)
     {
         await _sessionStorageService.SetItemAsync("userId", user.UserAccountId);
         
@@ -61,7 +61,7 @@ public class CustomAuthenticationStateProvider : AuthenticationStateProvider
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(userAccount)));
     }
 
-    public async Task LogoutUser()
+    public async Task EndUserSession()
     {
         await _sessionStorageService.RemoveItemAsync("userId");
 

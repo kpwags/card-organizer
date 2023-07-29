@@ -1,5 +1,6 @@
 using System.Text.Json;
 using CardOrganizer.Application.Repositories;
+using CardOrganizer.Domain;
 using CardOrganizer.Domain.Exceptions;
 using CardOrganizer.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -83,5 +84,16 @@ public class BrandRepository : IBrandRespository
         await dbContext.Brands.Where(b => b.BrandId == brandId).ExecuteDeleteAsync();
 
         await dbContext.SaveChangesAsync();
+    }
+    
+    public IEnumerable<Brand> GetBrandsOfType(Constants.CardType cardType)
+    {
+        var dbContext = _contextFactory.CreateDbContext();
+
+        return dbContext.Brands
+            .Where(b => b.CardTypeId == (int)cardType)
+            .OrderBy(b => b.Name)
+            .Select(b => Brand.FromDto(b))
+            .AsEnumerable();
     }
 }
