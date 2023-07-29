@@ -63,12 +63,14 @@
         {
             return;
         }
+
+        _isLoading = true;
         
         try
         {
             var user = await AccountService.LoginUser(_model.Email, _model.Password);
 
-            await ((CustomAuthenticationStateProvider)AuthStateProvider).AuthenticateUser(user);
+            await ((CustomAuthenticationStateProvider)AuthStateProvider).StartUserSession(user);
             
             _isLoading = false;
             

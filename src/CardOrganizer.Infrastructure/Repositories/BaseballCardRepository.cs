@@ -1,4 +1,6 @@
 using System.IO;
+using System.Text.Json;
+using CardOrganizer.Application.Models;
 using CardOrganizer.Domain;
 using CardOrganizer.Domain.Exceptions;
 using CardOrganizer.Infrastructure.Database;
@@ -159,5 +161,55 @@ public class BaseballCardRepository : IBaseballCardRepository
         dbContext.Update(baseballCard);
 
         await dbContext.SaveChangesAsync();
+    }
+
+    public IEnumerable<BaseballCard> GetAllWithImageData()
+    {
+        var cards = GetAll();
+
+        List<BaseballCard> baseballCards = new();
+
+        foreach (var card in cards.ToList())
+        {
+            if (card.FrontImageUrl != string.Empty)
+            {
+                card.FrontImageData = _fileService.GetImage(Constants.CardType.Baseball, card.BaseballCardId);
+            }
+
+            baseballCards.Add(card);
+        }
+
+        return baseballCards;
+    }
+
+    public (IEnumerable<BaseballCard> Cards, int TotalCards) GetAllPaginatedWithImageData(BaseballCardFilters filters, int currentPage, int cardsPerPage)
+    {
+        var filterYear = filters.Year ?? 0;
+        
+        var cards = GetAll()
+            .ToList()
+            .Where(c => c.Team == filters.Team || filters.Team == string.Empty)
+            .Where(c => c.BrandId == filters.BrandId || filters.BrandId == 0)
+            .Where(c => c.Year == filterYear || filterYear == 0)
+            .ToList();
+
+        var cardsForPage = cards
+            .Skip((currentPage - 1) * cardsPerPage)
+            .Take(cardsPerPage)
+            .ToList();
+        
+        List<BaseballCard> baseballCards = new();
+        
+        foreach (var card in cardsForPage)
+        {
+            if (card.FrontImageUrl != string.Empty)
+            {
+                card.FrontImageData = _fileService.GetImage(Constants.CardType.Baseball, card.BaseballCardId);
+            }
+
+            baseballCards.Add(card);
+        }
+
+        return (baseballCards, cards.Count);
     }
 }

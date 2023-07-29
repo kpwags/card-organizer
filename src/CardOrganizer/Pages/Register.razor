@@ -87,7 +87,7 @@
                 Email = _model.Email,
             }, _model.Password);
             
-            await ((CustomAuthenticationStateProvider)AuthStateProvider).AuthenticateUser(user);
+            await ((CustomAuthenticationStateProvider)AuthStateProvider).StartUserSession(user);
             
             NavigationManager.NavigateTo(string.IsNullOrWhiteSpace(RedirectUrl) ? "/" : RedirectUrl, true);
             

@@ -9,6 +9,7 @@
             <ul class="inline-block">
                 <AuthorizeView>
                         <Authorized>
+                            <li class="inline-block mx-4"><a href="/baseball" class="text-white">View Baseball Cards</a></li>
                             <li class="inline-block mx-4"><a href="/brands" class="text-white">Manage Brands</a></li>
                             <li class="inline-block mx-4"><a href="/baseball/manage" class="text-white">Manage Baseball Cards</a></li>
                             <li class="inline-block mx-4"><a href="#" class="text-white">@context?.User?.Identity?.Name</a></li>
@@ -31,6 +32,6 @@
 
     private async Task HandleLogout()
     {
-        await ((CustomAuthenticationStateProvider)AuthStateProvider).LogoutUser();
+        await ((CustomAuthenticationStateProvider)AuthStateProvider).EndUserSession();
     }
 }

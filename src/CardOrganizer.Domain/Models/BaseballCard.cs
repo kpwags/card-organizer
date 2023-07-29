@@ -22,7 +22,11 @@ public class BaseballCard
 
     public string FrontImageUrl { get; set; } = string.Empty;
 
+    public string FrontImageData { get; set; } = string.Empty;
+
     public string BackImageUrl { get; set; } = string.Empty;
+
+    public string BackImageData { get; set; } = string.Empty;
     
     public int Quantity { get; set; }
 

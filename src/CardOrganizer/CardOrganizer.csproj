@@ -27,10 +27,6 @@
     <ProjectReference Include="..\CardOrganizer.Infrastructure\CardOrganizer.Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Components" />
-  </ItemGroup>
-
   <Target Name="Static" BeforeTargets="Build">
     <Exec Command="yarn buildcss" />
   </Target>

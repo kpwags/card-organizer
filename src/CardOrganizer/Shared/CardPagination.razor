@@ -1,0 +1,56 @@
+<div class="flex justify-around">
+    @if (CurrentPage > 1)
+    {
+        <button type="button" class="btn-action-link mx-4" @onclick="OnPreviousClick">&lt; Prev</button>
+    }
+    else
+    {
+        <span>&nbsp;</span>
+    }
+    
+    <span>@StartingCard - @EndingCard of @TotalCardCount</span>
+    
+    @if (CurrentPage < LastPage)
+    {
+        <button type="button" class="btn-action-link mx-4" @onclick="OnNextClick">Next &gt;</button>
+    }
+    else
+    {
+        <span>&nbsp;</span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public int CurrentPage { get; set; } = 1;
+
+    [Parameter]
+    public int LastPage { get; set; } = 1;
+
+    [Parameter]
+    public int CardsPerPage { get; set; } = 20;
+
+    [Parameter]
+    public int TotalCardCount { get; set; }
+
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnNextClick { get; set; }
+    
+    [Parameter]
+    public EventCallback<MouseEventArgs> OnPreviousClick { get; set; }
+
+    private int StartingCard => ((CurrentPage - 1) * CardsPerPage) + 1;
+
+    private int EndingCard
+    {
+        get
+        {
+            if ((StartingCard + CardsPerPage - 1) > TotalCardCount)
+            {
+                return TotalCardCount;
+            }
+            
+            return StartingCard + CardsPerPage - 1;
+        }
+    }
+}
