@@ -1,37 +1,109 @@
 @using CardOrganizer.Infrastructure.Services
 @inject AuthenticationStateProvider AuthStateProvider
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 <header class="w-full border-b-4 border-gray-400 bg-primary shadow-md">
     <div class="flex h-20 items-center justify-between">
         <div class="site-title text-white text-2xl pl-4"><a href="/">Card Organizer</a></div>
         <div class="text-right">
-            <ul class="inline-block">
+            <ul class="relative hidden md:block">
                 <AuthorizeView>
-                        <Authorized>
-                            <li class="inline-block mx-4"><a href="/baseball" class="text-white">View Baseball Cards</a></li>
-                            <li class="inline-block mx-4"><a href="/brands" class="text-white">Manage Brands</a></li>
-                            <li class="inline-block mx-4"><a href="/baseball/manage" class="text-white">Manage Baseball Cards</a></li>
-                            <li class="inline-block mx-4"><a href="#" class="text-white">@context?.User?.Identity?.Name</a></li>
-                            <li class="inline-block mx-4">
-                                <button type="button" class="btn-link" @onclick="async () => await HandleLogout()">Logout</button>
-                            </li>
-                        </Authorized>
-                        <NotAuthorized>
-                            <li class="inline-block mx-4"><a href="/login" class="text-white">Login</a></li>
-                            <li class="inline-block mx-4"><a href="/register" class="text-white">Register</a></li>
-                        </NotAuthorized>
+                    <Authorized>
+                        <li class="inline-block mx-4">
+                            <button class="text-white" onclick="toggleBaseballMenu()">
+                                Baseball
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-caret-down-fill fill-white inline-block" viewBox="0 0 16 16">
+                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                </svg>
+                            </button>
+                            <ul
+                                id="baseball-menu"
+                                class="absolute left-auto right-auto z-50 float-left m-0 mt-4 min-w-[10rem] list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-zinc-700"
+                                hidden
+                            >
+                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-gray-700 hover:bg-gray-100 hover:text-primaryColor active:text-primaryColor active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-gray-400 dark:text-gray-200 dark:hover:bg-white/30">
+                                    <a href="/baseball" onclick="toggleBaseballMenu()">View All</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="inline-block mx-4 mr-8 relative">
+                            <button class="text-white" onclick="toggleUserMenu()">
+                                @context?.User?.Identity?.Name
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="bi bi-caret-down-fill fill-white inline-block" viewBox="0 0 16 16">
+                                    <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+                                </svg>
+                            </button>
+                            <ul
+                                id="user-menu"
+                                class="absolute left-auto right-0 z-50 float-left m-0 mt-4 min-w-[10rem] list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-zinc-700"
+                                hidden
+                            >
+                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-gray-700 hover:bg-gray-100 hover:text-primaryColor active:text-primaryColor active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-gray-400 dark:text-gray-200 dark:hover:bg-white/30">
+                                    <a href="/brands" onclick="toggleUserMenu()">Manage Brands</a>
+                                </li>
+                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-gray-700 hover:bg-gray-100 hover:text-primaryColor active:text-primaryColor active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-gray-400 dark:text-gray-200 dark:hover:bg-white/30">
+                                    <a href="/baseball/manage" onclick="toggleUserMenu()">Manage Baseball Cards</a>
+                                </li>
+                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-gray-700 hover:bg-gray-100 hover:text-primaryColor active:text-primaryColor active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-gray-400 dark:text-gray-200 dark:hover:bg-white/30">
+                                    <button type="button" class="btn-link text-green" @onclick="async () => await HandleLogout()">Logout</button>
+                                </li>
+                            </ul>
+                        </li>
+                    </Authorized>
+                    <NotAuthorized>
+                        <li class="inline-block mx-4"><a href="/login" class="text-white" onclick="toggleUserMenu()">Login</a></li>
+                        <li class="inline-block mx-4 mr-8"><a href="/register" class="text-white" onclick="toggleUserMenu()">Register</a></li>
+                    </NotAuthorized>
                 </AuthorizeView>
             </ul>
+            <div class="flex md:hidden mr-4 items-center">
+                <button type="button" onclick="toggleMobileMenu()" id="toggle-mobile-menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" class="w-6 h-6 fill-white stroke-white" id="toggle-mobile-menu-svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+            </div>
         </div>
     </div>
 </header>
+<div
+    id="mobile-menu"
+    class="absolute z-50 w-full"
+    hidden
+>
+    <ul class="p-6">
+        <AuthorizeView>
+            <Authorized>
+                <li class="mb-4 font-bold text-xl">Baseball</li>
+                <li class="my-4 ml-4"><a href="/baseball" onclick="toggleMobileMenu()">View All</a></li>
+                <li class="my-4 mt-6 font-bold text-xl">@context?.User?.Identity?.Name</li>
+                <li class="my-4 ml-4"><a href="/brands" onclick="toggleMobileMenu()">Manage Brands</a></li>
+                <li class="my-4 ml-4"><a href="/baseball/manage" onclick="toggleMobileMenu()">Manage Baseball Cards</a></li>
+                <li class="mt-4 ml-4"><button type="button" class="btn-link text-green" @onclick="async () => await HandleLogout(true)">Logout</button></li>
+            </Authorized>
+            <NotAuthorized>
+                <li class="mb-4"><a href="/login" class="text-white" onclick="toggleMobileMenu()">Login</a></li>
+                <li class="mt-4"><a href="/register" class="text-white" onclick="toggleMobileMenu()">Register</a></li>
+            </NotAuthorized>
+        </AuthorizeView>
+    </ul>
+</div>
 
 @code {
     [CascadingParameter] private Task<AuthenticationState>? AuthenticationState { get; set; }
 
-    private async Task HandleLogout()
+    private async Task HandleLogout(bool isMobile = false)
     {
         await ((CustomAuthenticationStateProvider)AuthStateProvider).EndUserSession();
+
+        if (isMobile)
+        {
+            await JsRuntime.InvokeVoidAsync("toggleMobileMenu");
+        }
+        else
+        {
+            await JsRuntime.InvokeVoidAsync("toggleUserMenu");
+        }
     }
 }
