@@ -11,7 +11,7 @@
   box-sizing: border-box; /* 1 */
   border-width: 0; /* 2 */
   border-style: solid; /* 2 */
-  border-color: #e5e7eb; /* 2 */
+  border-color: currentColor; /* 2 */
 }
 
 ::before,
@@ -633,9 +633,6 @@ video {
 .border-2 {
   border-width: 2px;
 }
-.border-b-4 {
-  border-bottom-width: 4px;
-}
 .border-b-2 {
   border-bottom-width: 2px;
 }
@@ -649,9 +646,9 @@ video {
   --tw-border-opacity: 1;
   border-color: rgb(0 104 34 / var(--tw-border-opacity));
 }
-.border-gray-400 {
+.border-lightGray {
   --tw-border-opacity: 1;
-  border-color: rgb(156 163 175 / var(--tw-border-opacity));
+  border-color: rgb(63 63 70 / var(--tw-border-opacity));
 }
 .bg-white {
   --tw-bg-opacity: 1;
@@ -664,14 +661,18 @@ video {
 .bg-transparent {
   background-color: transparent;
 }
+.bg-darkGray {
+  --tw-bg-opacity: 1;
+  background-color: rgb(24 24 27 / var(--tw-bg-opacity));
+}
 .bg-clip-padding {
   background-clip: padding-box;
 }
 .fill-white {
-  fill: #fff;
+  fill: #ffffff;
 }
 .stroke-white {
-  stroke: #fff;
+  stroke: #ffffff;
 }
 .p-8 {
   padding: 2rem;
@@ -779,9 +780,9 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
-.text-gray-700 {
+.text-darkGray {
   --tw-text-opacity: 1;
-  color: rgb(55 65 81 / var(--tw-text-opacity));
+  color: rgb(24 24 27 / var(--tw-text-opacity));
 }
 .shadow-md {
   --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
@@ -797,6 +798,7 @@ video {
 html, body {
     background: rgb(248, 250, 252);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 100%;
 }
 
 main {
@@ -832,6 +834,21 @@ input[type="password"] {
     padding: 0.3rem 0.6rem;
     width: 100%;
     min-width: 300px;
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus-visible,
+input[type="number"]:focus-visible,
+input[type="email"]:focus-visible,
+input[type="password"]:focus-visible {
+    border-color: rgb(0, 104, 34);
 }
 
 select {
@@ -1003,15 +1020,6 @@ header .site-title a:hover {
     max-height: 325px;
 }
 
-#mobile-menu {
-    background-color: rgb(30 41 59);
-}
-
-#mobile-menu,
-#mobile-menu a {
-    color: #ffffff;
-}
-
 .alert {
     padding: 1rem;
     border-radius: 0.5rem;
@@ -1123,9 +1131,17 @@ header .site-title a:hover {
         transform: translate(24px, 0);
     }
 }
-.hover\:bg-gray-100:hover {
+.hover\:bg-paleGray:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(243 244 246 / var(--tw-bg-opacity));
+}
+.hover\:text-primary:hover {
+  --tw-text-opacity: 1;
+  color: rgb(0 104 34 / var(--tw-text-opacity));
+}
+.active\:text-primary:active {
+  --tw-text-opacity: 1;
+  color: rgb(0 104 34 / var(--tw-text-opacity));
 }
 .active\:no-underline:active {
   text-decoration-line: none;
@@ -1136,16 +1152,7 @@ header .site-title a:hover {
 .disabled\:bg-transparent:disabled {
   background-color: transparent;
 }
-.disabled\:text-gray-400:disabled {
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity));
-}
 @media (prefers-color-scheme: dark) {
-
-  .dark\:text-gray-200 {
-    --tw-text-opacity: 1;
-    color: rgb(229 231 235 / var(--tw-text-opacity));
-  }
 
   .dark\:hover\:bg-white\/30:hover {
     background-color: rgb(255 255 255 / 0.3);

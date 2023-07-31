@@ -5,6 +5,7 @@
 html, body {
     background: rgb(248, 250, 252);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 100%;
 }
 
 main {
@@ -40,6 +41,21 @@ input[type="password"] {
     padding: 0.3rem 0.6rem;
     width: 100%;
     min-width: 300px;
+}
+
+input[type="text"]:hover,
+input[type="number"]:hover,
+input[type="email"]:hover,
+input[type="password"]:hover,
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus-visible,
+input[type="number"]:focus-visible,
+input[type="email"]:focus-visible,
+input[type="password"]:focus-visible {
+    border-color: rgb(0, 104, 34);
 }
 
 select {
@@ -209,15 +225,6 @@ header .site-title a:hover {
 .baseball-card .image img {
     border: 1px solid #696969;
     max-height: 325px;
-}
-
-#mobile-menu {
-    background-color: rgb(30 41 59);
-}
-
-#mobile-menu,
-#mobile-menu a {
-    color: #ffffff;
 }
 
 .alert {

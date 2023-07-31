@@ -3,7 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JsRuntime
 
-<header class="w-full border-b-4 border-gray-400 bg-primary shadow-md">
+<header class="w-full bg-primary shadow-md">
     <div class="flex h-20 items-center justify-between">
         <div class="site-title text-white text-2xl pl-4"><a href="/">Card Organizer</a></div>
         <div class="text-right">
@@ -22,7 +22,7 @@
                                 class="absolute left-auto right-auto z-50 float-left m-0 mt-4 min-w-[10rem] list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-zinc-700"
                                 hidden
                             >
-                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-gray-700 hover:bg-gray-100 hover:text-primaryColor active:text-primaryColor active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-gray-400 dark:text-gray-200 dark:hover:bg-white/30">
+                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-darkGray hover:bg-paleGray hover:text-primary active:text-primary active:no-underline dark:text-gray-200 dark:hover:bg-white/30">
                                     <a href="/baseball" onclick="toggleBaseballMenu()">View All</a>
                                 </li>
                             </ul>
@@ -39,13 +39,13 @@
                                 class="absolute left-auto right-0 z-50 float-left m-0 mt-4 min-w-[10rem] list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-zinc-700"
                                 hidden
                             >
-                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-gray-700 hover:bg-gray-100 hover:text-primaryColor active:text-primaryColor active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-gray-400 dark:text-gray-200 dark:hover:bg-white/30">
+                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-darkGray hover:bg-paleGray hover:text-primary active:text-primary active:no-underline disabled:pointer-events-none disabled:bg-transparent dark:text-gray-200 dark:hover:bg-white/30">
                                     <a href="/brands" onclick="toggleUserMenu()">Manage Brands</a>
                                 </li>
-                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-gray-700 hover:bg-gray-100 hover:text-primaryColor active:text-primaryColor active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-gray-400 dark:text-gray-200 dark:hover:bg-white/30">
+                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-darkGray hover:bg-paleGray hover:text-primary active:text-primary active:no-underline disabled:pointer-events-none disabled:bg-transparent dark:text-gray-200 dark:hover:bg-white/30">
                                     <a href="/baseball/manage" onclick="toggleUserMenu()">Manage Baseball Cards</a>
                                 </li>
-                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-gray-700 hover:bg-gray-100 hover:text-primaryColor active:text-primaryColor active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-gray-400 dark:text-gray-200 dark:hover:bg-white/30">
+                                <li class="block w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-darkGray hover:bg-paleGray hover:text-primary active:text-primary active:no-underline disabled:pointer-events-none disabled:bg-transparent dark:text-gray-200 dark:hover:bg-white/30">
                                     <button type="button" class="btn-link text-green" @onclick="async () => await HandleLogout()">Logout</button>
                                 </li>
                             </ul>
@@ -69,18 +69,18 @@
 </header>
 <div
     id="mobile-menu"
-    class="absolute z-50 w-full"
+    class="absolute z-50 w-full bg-darkGray"
     hidden
 >
     <ul class="p-6">
         <AuthorizeView>
             <Authorized>
-                <li class="mb-4 font-bold text-xl">Baseball</li>
-                <li class="my-4 ml-4"><a href="/baseball" onclick="toggleMobileMenu()">View All</a></li>
-                <li class="my-4 mt-6 font-bold text-xl">@context?.User?.Identity?.Name</li>
-                <li class="my-4 ml-4"><a href="/brands" onclick="toggleMobileMenu()">Manage Brands</a></li>
-                <li class="my-4 ml-4"><a href="/baseball/manage" onclick="toggleMobileMenu()">Manage Baseball Cards</a></li>
-                <li class="mt-4 ml-4"><button type="button" class="btn-link text-green" @onclick="async () => await HandleLogout(true)">Logout</button></li>
+                <li class="mb-4 font-bold text-xl text-white">Baseball</li>
+                <li class="my-4 ml-4"><a href="/baseball" onclick="toggleMobileMenu()" class="text-white">View All</a></li>
+                <li class="my-4 mt-6 font-bold text-xl text-white">@context?.User?.Identity?.Name</li>
+                <li class="my-4 ml-4"><a href="/brands" onclick="toggleMobileMenu()" class="text-white">Manage Brands</a></li>
+                <li class="my-4 ml-4"><a href="/baseball/manage" onclick="toggleMobileMenu()" class="text-white">Manage Baseball Cards</a></li>
+                <li class="mt-4 ml-4"><button type="button" class="btn-link text-white" @onclick="async () => await HandleLogout(true)">Logout</button></li>
             </Authorized>
             <NotAuthorized>
                 <li class="mb-4"><a href="/login" class="text-white" onclick="toggleMobileMenu()">Login</a></li>
