@@ -12,9 +12,9 @@
                 <a href="/brands/add" class="btn-primary">Add Brand</a>
             </div>
             <div class="w-full">
-                <table class="standard-table border-2 border-zinc-700 table-fixed w-full my-16">
+                <table class="standard-table border-2 border-lightGray table-fixed w-full my-16">
                     <thead>
-                    <tr class="border-b-2 border-zinc-700">
+                    <tr class="border-b-2 border-lightGray">
                         <th class="text-left p-2">Brand</th>
                         <th class="text-left p-2">Type</th>
                         <th class="text-left p-2">Actions</th>
@@ -29,7 +29,7 @@
                     }
                     @foreach (var brand in _brands)
                     {
-                        <tr class="py-4 border-b border-zinc-700">
+                        <tr class="py-4 border-b border-lightGray">
                             <td class="p-2">
                                 @brand.Name
                                 @if (!brand.IsActive)

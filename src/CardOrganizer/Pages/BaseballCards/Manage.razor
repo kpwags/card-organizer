@@ -12,9 +12,9 @@
                 <a href="/baseball/add" class="btn-primary">Add Card</a>
             </div>
             <div class="w-full">
-                <table class="standard-table border-2 border-zinc-700 table-fixed w-full mt-16">
+                <table class="standard-table border-2 border-lightGray table-fixed w-full mt-16">
                     <thead>
-                    <tr class="border-b-2 border-zinc-700">
+                    <tr class="border-b-2 border-lightGray">
                         <th class="text-left p-2 cursor-pointer" @onclick="(() => ChangeSort(TableColumn.PlayerName))">
                             Player
                             
@@ -93,7 +93,7 @@
                     
                     @foreach (var card in _displayedCards)
                     {
-                        <tr class="py-4 border-b border-zinc-700">
+                        <tr class="py-4 border-b border-lightGray">
                             <td class="p-2">
                                 @card.PlayerName (@card.PlayerPosition)
                             </td>

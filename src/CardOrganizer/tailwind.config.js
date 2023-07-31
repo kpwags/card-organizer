@@ -10,9 +10,10 @@ module.exports = {
     theme: {
         colors: {
             primary: 'rgb(0, 104, 34)',
-            brandBlue: '#2b59c0',
             transparent: 'transparent',
-            current: 'currentColor',
+            paleGray: 'rgb(243 244 246)',
+            lightGray: 'rgb(63 63 70)',
+            darkGray: 'rgb(24, 24, 27)',
             black: colors.black,
             white: colors.white,
             gray: colors.gray,
