@@ -199,7 +199,7 @@ header .site-title a:hover {
     background: #e5e7eb;
 }
 
-.standard-table thead tr th svg {
+.standard-table svg.sort-indicator {
     display: inline-block;
 }
 
