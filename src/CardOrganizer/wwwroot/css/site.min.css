@@ -11,7 +11,7 @@
   box-sizing: border-box; /* 1 */
   border-width: 0; /* 2 */
   border-style: solid; /* 2 */
-  border-color: currentColor; /* 2 */
+  border-color: #e5e7eb; /* 2 */
 }
 
 ::before,
@@ -669,10 +669,10 @@ video {
   background-clip: padding-box;
 }
 .fill-white {
-  fill: #ffffff;
+  fill: #fff;
 }
 .stroke-white {
-  stroke: #ffffff;
+  stroke: #fff;
 }
 .p-8 {
   padding: 2rem;
@@ -992,7 +992,7 @@ header .site-title a:hover {
     background: #e5e7eb;
 }
 
-.standard-table thead tr th svg {
+.standard-table thead tr th svg.sort-indicator {
     display: inline-block;
 }
 
@@ -1153,6 +1153,11 @@ header .site-title a:hover {
   background-color: transparent;
 }
 @media (prefers-color-scheme: dark) {
+
+  .dark\:text-gray-200 {
+    --tw-text-opacity: 1;
+    color: rgb(229 231 235 / var(--tw-text-opacity));
+  }
 
   .dark\:hover\:bg-white\/30:hover {
     background-color: rgb(255 255 255 / 0.3);

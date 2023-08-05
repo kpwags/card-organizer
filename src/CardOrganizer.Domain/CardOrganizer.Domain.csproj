@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <RootNamespace>CardOrganizer.Domain</RootNamespace>
@@ -9,8 +9,8 @@
 
     <ItemGroup>
       <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.2" />
-      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.2" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0-preview.6.23329.11" />
+      <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0-preview.6.23329.11" />
     </ItemGroup>
 
 </Project>
