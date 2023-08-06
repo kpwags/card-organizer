@@ -16,6 +16,23 @@ public class BaseballCard
     
     public string PlayerPosition { get; set; } = string.Empty;
 
+    public string PlayerPostionFullName => PlayerPosition switch
+    {
+        "SP" => "Starting Pitcher",
+        "RP" => "Relief Pitcher",
+        "C" => "Catcher",
+        "1B" => "First Base",
+        "2B" => "Second Base",
+        "3B" => "Third Base",
+        "SS" => "Shortstop",
+        "LF" => "Left Field",
+        "CF" => "Center Field",
+        "RF" => "Right Field",
+        "IF" => "Infield",
+        "OF" => "Outfield",
+        _ => "Unknown"
+    };
+
     public string Team { get; set; } = string.Empty;
 
     public string Flags { get; set; } = string.Empty;

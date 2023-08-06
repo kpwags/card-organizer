@@ -9,7 +9,9 @@
             <img src="@Card.FrontImageData" alt="@Card.PlayerName" />
         }
     </div>
-    <h3 class="text-lg font-semibold mt-2 text-primary">@Card.PlayerName</h3>
+    <h3 class="text-lg font-semibold mt-2 text-primary">
+        <a href="/baseball/view/@Card.BaseballCardId">@Card.PlayerName</a>
+    </h3>
     <div>@Card.Brand.Name @Card.Year</div>
     <div class="italic">@Card.Team</div>
 </div>

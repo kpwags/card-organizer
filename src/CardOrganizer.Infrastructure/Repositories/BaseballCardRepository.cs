@@ -23,14 +23,28 @@ public class BaseballCardRepository : IBaseballCardRepository
     {
         var dbContext = _contextFactory.CreateDbContext();
 
-        var baseballCard = dbContext.BaseballCards.FirstOrDefault(b => b.BaseballCardId == baseballCardId);
+        var baseballCard = dbContext.BaseballCards
+            .Include(b => b.Brand)
+            .FirstOrDefault(b => b.BaseballCardId == baseballCardId);
 
         if (baseballCard is null)
         {
             throw new ObjectNotFoundException("Unable to find the specified brand");
         }
 
-        return BaseballCard.FromDto(baseballCard);
+        var card = BaseballCard.FromDto(baseballCard);
+        
+        if (card.FrontImageUrl != string.Empty)
+        {
+            card.FrontImageData = _fileService.GetImage(Constants.CardType.Baseball, card.BaseballCardId);
+        }
+        
+        if (card.BackImageUrl != string.Empty)
+        {
+            card.BackImageData = _fileService.GetImage(Constants.CardType.Baseball, card.BaseballCardId, Constants.CardSide.Back);
+        }
+
+        return card;
     }
 
     public IQueryable<BaseballCard> GetAll()

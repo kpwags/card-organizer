@@ -2,6 +2,13 @@ namespace CardOrganizer.Domain;
 
 public static class Constants
 {
+    public enum PageState
+    {
+        Loading = 1,
+        Ready = 2,
+        Error = 3,
+    }
+    
     public enum CardType
     {
         Baseball = 1,
