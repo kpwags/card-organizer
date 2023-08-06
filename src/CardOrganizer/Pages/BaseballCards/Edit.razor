@@ -258,8 +258,8 @@
             _model.CardNumber = card.CardNumber;
             _model.PlayerName = card.PlayerName;
 
-            _cardFrontImageData = FileService.GetImage(Constants.CardType.Baseball, BaseballCardId);
-            _cardBackImageData = FileService.GetImage(Constants.CardType.Baseball, BaseballCardId, Constants.CardSide.Back);
+            _cardFrontImageData = card.FrontImageData;
+            _cardBackImageData = card.BackImageData;
         }
         catch (Exception e)
         {
