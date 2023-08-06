@@ -1,0 +1,88 @@
+@page "/baseball/view/{cardId:int}"
+@using CardOrganizer.Domain.Exceptions
+@using CardOrganizer.Domain
+
+@inject IBaseballCardRepository BaseballCardRepository
+
+<main>
+    @if (_pageState == Constants.PageState.Loading)
+    {
+        <LoadingIndicator IsLoading="true" Tip="Loading..."/>
+    }
+    
+    @if (_pageError != string.Empty)
+    {
+        <div class="alert error mt-8 mb-0">
+            @_pageError
+        </div>
+    }
+    
+    @if (_pageState == Constants.PageState.Ready && _isCardNotFound)
+    {
+        <h1 class="text-3xl text-primary mb-4">Oops!</h1>
+        <p>The card you're looking for could not be found.</p>
+    }
+    
+    @if (_pageState == Constants.PageState.Ready && !_isCardNotFound)
+    {
+        <h1 class="text-4xl text-primary mb-4">@_baseballCard.PlayerName</h1>
+                                                                        
+        <div class="mb-8">
+            <h2 class="text-2xl mb-4">@_baseballCard.Year @_baseballCard.Brand.Name (#@_baseballCard.CardNumber)</h2>
+            <div class="text-lg"><span class="font-bold">Team:</span> @_baseballCard.Team</div>
+            <div class="text-lg"><span class="font-bold">Position:</span> @_baseballCard.PlayerPostionFullName</div>
+            @if (_baseballCard.Flags != string.Empty)
+            {
+                <div class="text-lg"><span class="font-bold">Flags:</span> @_baseballCard.Flags</div>
+            }
+            <div class="text-lg"><span class="font-bold">Copies:</span> @_baseballCard.Quantity</div>
+        </div>
+        
+        <div class="block md:flex justify-center items-center gap-x-16 text-center">
+            <div class="max-w-[100%] md:max-w-[450px] mb-4 md:mb-0">
+                <img
+                    src="@(_baseballCard.FrontImageData != string.Empty ? _baseballCard.FrontImageData : "/img/default_baseball.jpg")"
+                    alt="@_baseballCard.PlayerName"
+                    class="border border-gray-400 shadow-xl"
+                />
+            </div>
+            <div class="max-w-[100%] md:max-w-[450px]">
+                <img
+                    src="@(_baseballCard.BackImageData != string.Empty ? _baseballCard.BackImageData : "/img/default_baseball.jpg")"
+                    alt="@_baseballCard.PlayerName"
+                    class="border border-gray-400 shadow-xl"
+                />
+            </div>
+        </div>
+    }
+</main>
+
+@code {
+    [Parameter]
+    public int CardId { get; set; }
+    
+    private Constants.PageState _pageState = Constants.PageState.Loading;
+    private bool _isCardNotFound = false;
+    private string _pageError = string.Empty;
+
+    private BaseballCard _baseballCard = new();
+
+    protected override void OnInitialized()
+    {
+        try
+        {
+            _baseballCard = BaseballCardRepository.GetById(CardId);
+            _pageState = Constants.PageState.Ready;
+        }
+        catch (ObjectNotFoundException)
+        {
+            _isCardNotFound = true;
+            _pageState = Constants.PageState.Ready;
+        }
+        catch (Exception e)
+        {
+            _pageError = e.Message;
+            _pageState = Constants.PageState.Error;
+        }
+    }
+}
