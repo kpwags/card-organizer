@@ -16,14 +16,14 @@
                 <EditForm Model="@_model" OnSubmit="@AddBrand" Context="AddBrandContext">
                     <DataAnnotationsValidator/>
             
-                    @if (_pageError != "")
+                    @if (!string.IsNullOrWhiteSpace(_pageError))
                     {
                         <div class="alert error mt-8 mb-0">
                             @_pageError
                         </div>
                     }
             
-                    <fieldset disabled="@_isLoading" aria-busy="@_isLoading">
+                    <fieldset disabled="@_isProcessing" aria-busy="@_isProcessing">
                         <div class="my-8">
                             <label for="name" class="mb-8">
                                 <div class="pb-2 font-semibold">Name</div>
@@ -59,21 +59,19 @@
 
 @code {
     private readonly AddBrandViewModel _model = new();
-    private bool _isLoading;
+    private bool _isProcessing;
     private string _pageError = string.Empty;
 
     private async void AddBrand(EditContext editContext)
     {
+        _isProcessing = true;
         _pageError = string.Empty;
         
-        bool isValid = editContext.Validate();
-        
-        if (!isValid)
+        if (!editContext.Validate())
         {
+            _isProcessing = false;
             return;
         }
-        
-        _isLoading = true;
         
         try
         {
@@ -85,12 +83,12 @@
             
             NavigationManager.NavigateTo("/brands", true);
             
-            _isLoading = false;
+            _isProcessing = false;
         }
         catch (Exception e)
         {
             _pageError = e.Message;
-            _isLoading = false;
+            _isProcessing = false;
             StateHasChanged();
         }
     }
